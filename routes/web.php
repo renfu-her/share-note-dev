@@ -9,11 +9,18 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/admin/login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');
-Route::post('/admin/login', [AdminAuthController::class, 'login']);
-Route::post('/admin/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');
+// 管理員登入
+Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
+    Route::get('/login', [AdminAuthController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [AdminAuthController::class, 'login']);
+    Route::get('/logout', [AdminAuthController::class, 'logout'])->name('logout');
+});
 
-Route::middleware(['auth:admin'])->group(function () {
-    Route::resource('admin/categories', AdminCategoryController::class);
-    Route::resource('admin/notes', AdminNoteController::class);
+Route::group([
+    'middleware' => ['auth'],
+    'prefix' => 'admin',
+    'as' => 'admin.'
+], function () {
+    Route::resource('categories', AdminCategoryController::class);
+    Route::resource('notes', AdminNoteController::class);
 });
