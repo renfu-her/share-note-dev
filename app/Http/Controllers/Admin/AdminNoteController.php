@@ -37,4 +37,40 @@ class AdminNoteController extends Controller
 
         return redirect()->route('admin.notes.index')->with('success', '筆記已成功創建');
     }
+
+    public function edit(Note $note)
+    {
+        $categories = Category::all();
+        return view('admin.notes.edit', compact('note', 'categories'));
+    }
+
+    public function update(Request $request, Note $note)
+    {
+        $validated = $request->validate([
+            'title' => 'required|max:255',
+            'content' => 'required',
+            'category_id' => 'required|exists:categories,id',
+            'status' => 'required|in:published,draft'
+        ]);
+
+        $note->update($validated);
+
+        return redirect()
+            ->route('admin.notes.index')
+            ->with('success', '筆記已成功更新');
+    }
+
+    public function destroy(Note $note)
+    {
+        try {
+            $note->delete();
+            return redirect()
+                ->route('admin.notes.index')
+                ->with('success', '筆記已成功刪除');
+        } catch (\Exception $e) {
+            return redirect()
+                ->route('admin.notes.index')
+                ->with('error', '刪除筆記時發生錯誤');
+        }
+    }
 }

@@ -21,7 +21,7 @@
 
         <div class="card">
             <div class="card-body">
-                <table class="table">
+                <table class="table" id="dataTable">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -68,3 +68,15 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+            $('#dataTable').DataTable({
+                language: {
+                    url: "//cdn.datatables.net/plug-ins/2.1.8/i18n/zh-HANT.json"
+                }
+            });
+        });
+    </script>
+@endpush

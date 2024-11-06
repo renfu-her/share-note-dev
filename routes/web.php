@@ -11,9 +11,12 @@ Route::get('/', function () {
 
 // 管理員登入
 Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
+    Route::get('/', function () {
+        return redirect()->route('admin.login');
+    });
     Route::get('/login', [AdminAuthController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [AdminAuthController::class, 'login']);
-    Route::get('/logout', [AdminAuthController::class, 'logout'])->name('logout');
+    Route::match(['get', 'post'], '/logout', [AdminAuthController::class, 'logout'])->name('logout');
 });
 
 Route::group([
