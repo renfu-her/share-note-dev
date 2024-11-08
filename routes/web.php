@@ -20,7 +20,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
 });
 
 Route::group([
-    'middleware' => ['auth'],
+    'middleware' => ['admin.auth'],
     'prefix' => 'admin',
     'as' => 'admin.'
 ], function () {
